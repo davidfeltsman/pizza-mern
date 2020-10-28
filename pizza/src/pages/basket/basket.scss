@@ -1,0 +1,414 @@
+@import 'variables.scss';
+
+.basket {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+  padding-left: 250px;
+  padding-right: 250px;
+  background-color: #fff;
+  min-height: 75vh;
+  @media (max-width: 1260px) {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  @include _670 {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  @include _768 {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 80px;
+  }
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px $gray-line solid;
+    padding-bottom: 30px;
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+  }
+  &__title {
+    font-size: 32px;
+    @include _768 {
+      font-size: 28px;
+    }
+  }
+  &__img {
+    margin-right: 12px;
+    width: 30px;
+    height: 30px;
+    path {
+      stroke: #232323;
+      stroke-width: 1.9;
+    }
+  }
+  &__clear {
+    border: 0;
+    background-color: inherit;
+    display: flex;
+    align-items: center;
+    min-height: 20px;
+    cursor: pointer;
+    path {
+      transition: stroke $duration ease-in-out;
+    }
+    &-text {
+      font-size: 16px;
+      color: #B6B6B6;
+      margin-left: 6px;
+      transition: color $duration ease-in-out;
+    }
+    &:hover {
+      path {
+        stroke: $black;
+      }
+      .basket__clear-text {
+        color: $black;
+      }
+    }
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    @include _768 {
+      margin-top: 15px;
+    }
+  }
+  &__counter-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__pizza {
+    &-block {
+      display: grid;
+      grid-template-columns: 80px 40% 1fr 1fr 32px;
+      width: 100%;
+      align-items: center;
+      padding-bottom: 30px;
+      border-bottom: 1px solid $gray-line;
+      margin-top: 30px;
+      justify-items: center;
+      &:last-child {
+        border: 0;
+      }
+      @include _768 {
+        grid-template-columns: 60px 40% 1fr 1fr 32px;
+      }
+      @include _600 {
+        row-gap: 10px;
+        column-gap: 10px;
+        grid-template-columns: 60px 40% 1fr 60px;
+        grid-template-rows: auto;
+        grid-template-areas: 
+          "i t b x"
+          "i t p x";
+      }
+    }
+    &-img {
+      width: 100%;
+      @include _600 {
+        grid-area: i;
+      }
+    }
+    &-content {
+      margin-left: 15px;
+      justify-self: self-start;
+      @include _600 {
+        margin-left: 0;
+        grid-area: t;
+      }
+    }
+    &-title {
+      font-weight: bold;
+      font-size: 22px;
+      @include _768 {
+        font-size: 18px;
+      }
+    }
+    &-info {
+      font-size: 18px;
+      color: #8D8D8D;
+      @include _768 {
+        font-size: 16px;
+      }
+    }
+    &-price {
+      font-weight: bold;
+      font-size: 22px;
+      @include _768 {
+        font-size: 18px;
+      }
+      @include _600 {
+        grid-area: p;
+      }
+    }
+    &-button {
+      background-color: inherit;
+      border: 2px solid $orange;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all $duration ease-in-out;
+      &-minus {
+        path:first-of-type {
+          display: none;
+        };
+      }
+      &:hover {
+        background-color: $orange;
+        svg {
+          path {
+            fill: #fff;
+          }
+        }
+      }
+      @include _768 {
+        width: 28px;
+        height: 28px;
+      }
+      @include _600 {
+        grid-area: b;
+      }
+    }
+    &-counter {
+      margin: 0 12px;
+      font-weight: bold;
+      font-size: 22px;
+      @include _768 {
+        font-size: 18px;
+      }
+    }
+    &-remove {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #D7D7D7;
+      background-color: inherit;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all $duration ease-in-out;
+      &:hover {
+        background-color: #2a2a2a;
+        border-color: #2a2a2a;
+      }
+      @include _768 {
+        width: 28px;
+        height: 28px;
+      }
+      @include _600 {
+        grid-area: x;
+      }
+    }
+    &-cross {
+      transform: rotate(45deg);
+      width: 11.5px;
+      height: 11.5px;  
+      path {
+        fill:#D7D7D7;
+        stroke-width: 2;
+      }
+    }
+  }
+  &__total {
+    &-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+    &-title {
+      font-size: 22px; 
+      &:last-of-type span {
+        color: $orange;
+      }
+      @include _768 {
+        font-size: 18px;
+      }
+    }
+    &-amount {
+      font-weight: bold;
+    }
+  }
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &-back {
+      padding: 18px 40px 18px 28px;
+      border: 1px solid #D3D3D3;
+      box-sizing: border-box;
+      border-radius: 30px;
+      color: #D3D3D3;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      transition: background-color $duration ease-in-out;
+      svg {
+        margin-right: 12px;
+      }
+      &:hover {
+        background-color: $black;
+      }
+      @include _768 {
+        font-size: 14px;
+      }
+    }
+    &-submit {
+      padding: 18px 40px;
+      border: 1px solid $orange;
+      border-radius: 30px;
+      background-color: $orange;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      color: #fff;
+      transition: background-color $duration ease-in-out;
+      &:hover {
+        background-color: #ef4500;
+      }
+      @include _768 {
+        font-size: 14px;
+      }
+    }
+  }
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-title {
+      font-weight: bold;
+      font-size: 32px;
+      margin-bottom: 10px;
+      @include _768 {
+        font-size: 26px;
+      }
+    }
+    &-text {
+      font-size: 18px;
+      color: #777777;
+      line-height: 25px;
+      @include _768 {
+        font-size: 16px;
+      }
+    }
+    img {
+      width: 260px;
+      margin-top: 65px;
+      margin-bottom: 70px;
+    }
+    &-link {
+      border-radius: 30px;
+      background-color: $black;
+      font-weight: bold;
+      font-size: 16px;
+      color: #fff;
+      padding: 16px 40px;
+      transition: filter $duration ease-in-out;
+      &:hover {
+        filter: brightness(1.2);
+      }
+      @include _768 {
+        font-size: 14px;
+      }
+    }
+  }
+  @include _480 {
+    padding-top: 40px;
+    &__title {
+      font-size: 24px;
+    }
+    &__img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+    &__clear {
+      &-text {
+        font-size: 14px;
+      }
+      &-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    &__pizza {
+      &-button {
+        width: 24px;
+        height: 24px;
+      }
+      &-counter {
+        margin: 0 8px;
+        font-size: 16px;
+      }
+      &-title {
+        font-size: 16px;
+      }
+      &-info {
+        font-size: 14px;
+      }
+      &-price {
+        font-size: 16px;
+      }
+      &-remove {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    &__buttons {
+      &-back {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+      &-submit {
+        padding: 10px 20px;
+        font-size: 13px; 
+      }
+    }
+    &__empty {
+      &-title {
+        font-size: 24px;
+      }
+      &-text {
+        font-size: 14px;
+        line-height: 1.2;
+      }
+    }
+  }
+  @include _380 {
+      padding-left: 15px;
+      padding-right: 15px;
+      &__pizza-block {
+        grid-template-columns: 30px 35% 1fr 20px;
+      }
+      &__total-title {
+        font-size: 15px;
+      }
+      &__buttons {
+        &-back {
+          padding: 8px 14px;
+        }
+        &-submit {
+          padding: 8px 14px;
+        }
+      }
+  }
+}
