@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config();
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error'));

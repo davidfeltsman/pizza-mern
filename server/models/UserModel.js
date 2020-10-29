@@ -1,6 +1,6 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-const userScheme = new Schema({
+const userScheme = new mongoose.Schema({
   email: {
     unique: true,
     required: true,
@@ -15,12 +15,15 @@ const userScheme = new Schema({
     required: true,
     type: String,
   },
-  confirmed: Boolean,
-  confirmed_hash: {
+  confirmed: {
+    type: Boolean,
+    default: false,
+  },
+  confirmHash: {
     required: true,
     type: String,
   },
   role: String,
 });
 
-export const UserModel = model('User', userScheme);
+export const UserModel = mongoose.model('User', userScheme);
