@@ -1,5 +1,5 @@
 import crypto from 'crypto';
 
-export const generateMD5 = (val) => {
-  return crypto.createHash('md5').update(val).digest('hex');
+export const generateSHA = (val) => {
+  return crypto.createHash('sha256').update(val).digest('hex');
 };
