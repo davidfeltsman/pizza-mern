@@ -2,16 +2,38 @@ import validator from 'express-validator';
 import { UserModel } from '../models/UserModel.js';
 import { generateSHA } from '../utils/generateHash.js';
 import { mailer } from '../utils/nodemailer.js';
+import jwt from 'jsonwebtoken';
 import rand from 'csprng';
 
 class Auth {
   async login(req, res) {
     try {
-      const candidate = await UserModel.findOne({ email: req.body.email });
+      const candidate = await UserModel.findOne({
+        $or: [{ email: req.body.email }, { username: req.body.email }],
+      });
       if (candidate) {
         const passwordCheck =
-          candidate.salt + req.body.password === candidate.password ? true : false;
+          generateSHA(candidate.salt + req.body.password) === candidate.password ? true : false;
         if (passwordCheck) {
+          if (candidate.confirmed) {
+            const token = jwt.sign(
+              {
+                email: candidate.email,
+                role: candidate.role,
+              },
+              process.env.SECRET,
+              { expiresIn: 60 * 60 },
+            );
+            res.status(200).json({
+              token: `Bearer ${token}`,
+            });
+          } else {
+            res.status(403).json({
+              status: 'error',
+              message:
+                'Email не подтвержден, для подтверждения перейдите по ссылке, отправленной на этот почтовый ящик',
+            });
+          }
         } else {
           res.status(401).json({
             status: 'error',
