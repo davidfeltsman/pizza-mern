@@ -3,18 +3,24 @@ import { useSelector } from 'react-redux';
 import Login from './components/Auth/Login';
 import PrivateRoute from './components/custom/PrivateRoute';
 import Dashboard from './pages/Dashboard';
+import Register from './components/Auth/Register';
 
 function App() {
   const { user, isAuthorizate } = useSelector(({ currentUser: { user, isAuthorizate } }) => ({
     user,
     isAuthorizate,
   }));
-
+  // Авторизация
+  // Регистрация
+  // Дашборд
+  // Кабинет пользователя
+  // Роль
   return (
     <div className="App">
       <Switch>
         <Route exact path="/login" component={Login} />
-        <PrivateRoute exact path="/dashboard" isAuthorizate={isAuthorizate} component={Dashboard} />
+        <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/" isAuthorizate={isAuthorizate} component={Dashboard} />
       </Switch>
     </div>
   );

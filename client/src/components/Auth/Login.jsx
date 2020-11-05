@@ -1,11 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import './auth.css';
 
 export default function Login() {
   return (
-    <div>
-      <form className="">
+    <div className="auth">
+      <h1>Pizza CRM </h1>
+      <form className="auth-form">
         <div className="form-group">
-          <label htmlFor="exampleInputEmail1">Email address</label>
+          <label htmlFor="exampleInputEmail1">Email адресс или логин</label>
           <input
             type="email"
             className="form-control"
@@ -13,22 +16,21 @@ export default function Login() {
             aria-describedby="emailHelp"
           />
           <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
+            Убедитесь, что введенный вами Email подтвержден
           </small>
         </div>
         <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Password</label>
+          <label htmlFor="exampleInputPassword1">Пароль</label>
           <input type="password" className="form-control" id="exampleInputPassword1" />
         </div>
-        <div className="form-group form-check">
-          <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            Check me out
-          </label>
+        <div className="button-group">
+          <button type="submit" className="btn btn-lg btn-outline-dark">
+            Войти
+          </button>
+          <Link className="register-link" to="/register">
+            Нет аккаунта? Нажмите, чтобы зарегистрироваться в системе
+          </Link>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
       </form>
     </div>
   );
