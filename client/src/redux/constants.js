@@ -1,2 +1,9 @@
+// errorAPI
+export const SET_NOTIFICATION = 'SET_NOTIFICATION';
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
+
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const REMOVE_CURRENT_USER = 'REMOVE_CURRENT_USER';
+
+export const BASE_URL = 'http://localhost:3001/api/';

@@ -18,20 +18,21 @@ class Auth {
           if (candidate.confirmed) {
             const token = jwt.sign(
               {
-                email: candidate.email,
+                _id: candidate._id,
                 role: candidate.role,
               },
               process.env.SECRET,
-              { expiresIn: 60 * 60 },
+              { expiresIn: '1h' },
             );
             res.status(200).json({
+              user: candidate,
               token: `Bearer ${token}`,
             });
           } else {
             res.status(403).json({
               status: 'error',
               message:
-                'Email не подтвержден, для подтверждения перейдите по ссылке, отправленной на этот почтовый ящик',
+                'Email не подтвержден, для подтверждения перейдите по ссылке, отправленной на ваш почтовый ящик',
             });
           }
         } else {
@@ -78,7 +79,7 @@ class Auth {
           subject: 'Hello ✔',
           text: 'React Pizza panel',
           html: `<p>Для того, чтобы подтвердить почту, перейдите <a href="http://localhost:${
-            process.env.PORT || 3000
+            process.env.SERVER_PORT || 3000
           }/api/auth/verify?hash=${data.confirmHash}">по этой ссылке</a></p>`,
         });
         res.status(200).json({
@@ -116,11 +117,32 @@ class Auth {
       } else {
         res.status(404).json({
           status: 'error',
-          message: 'user not found',
+          message: 'Пользователь не найден',
         });
       }
     } catch (error) {
       res.status(500).json({
+        status: 'error',
+        message: JSON.stringify(error),
+      });
+    }
+  }
+
+  async checkUser(req, res) {
+    try {
+      const token = await req.headers['token'].split(' ')[1];
+      const { payload } = jwt.decode(token, { complete: true });
+      const user = await UserModel.findById(payload._id);
+      if (user) {
+        res.status(200).json({ user });
+      } else {
+        res.status(404).json({
+          status: 'error',
+          message: 'Пользователь не найден',
+        });
+      }
+    } catch (error) {
+      res.status(401).json({
         status: 'error',
         message: JSON.stringify(error),
       });

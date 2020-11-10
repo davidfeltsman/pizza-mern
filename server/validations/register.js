@@ -7,7 +7,7 @@ export const registerValidations = [
     .isEmail()
     .withMessage('Некорректный E-mail')
     .isLength({
-      min: 10,
+      min: 5,
       max: 40,
     })
     .withMessage('Допустимое количество символов: минимум 10, максимум 40'),
@@ -17,7 +17,9 @@ export const registerValidations = [
       min: 3,
       max: 40,
     })
-    .withMessage('Минимум 3 символа, максимум 40'),
+    .withMessage('Минимум 3 символа, максимум 40')
+    .isAlphanumeric()
+    .withMessage('Допустимы только английские буквы или цифры'),
   body('password', 'Введите пароль')
     .isString()
     .isLength({

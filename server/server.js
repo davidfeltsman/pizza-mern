@@ -13,11 +13,12 @@ const app = express();
 
 app.use(express.json());
 app.use(passport.initialize());
+app.use(cors());
 jwtConfig(passport);
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 
-app.listen(3001, () => {
+app.listen(process.env.SERVER_PORT, () => {
   console.log('server start');
 });
