@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -14,10 +14,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { BASE_URL } from '../../redux/constants';
 import { setNotification } from '../../redux/actions/actionCreators';
-import notificationNormalize from '../../API/notificationNormalize';
+import { axiosPost } from '../../API/API';
 
 const useStyles = makeStyles({
   signBox: {
@@ -35,23 +33,39 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  succesMessage: {
+    marginTop: '15px',
+    borderRadius: '5px',
+    backgroundColor: '#8eff6a',
+    padding: '10px',
+  },
 });
 
 export default function Register() {
+  const [regMessage, setRegMessage] = useState({
+    status: false,
+    email: '',
+  });
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
-  const onSubmit = async (data) => {
-    try {
-      const res = await axios.post(`${BASE_URL}auth/register`, data);
-      if (res.status === 200) {
-        window.location.href = '/';
+  const onSubmit = (data) => {
+    axiosPost('auth/register', data, dispatch).then((res) => {
+      if (res) {
+        setRegMessage({
+          status: true,
+          email: data.email,
+        });
+        dispatch(
+          setNotification({
+            status: res.data.status,
+            message: 'Регистрация успешна',
+          }),
+        );
       }
-    } catch (err) {
-      dispatch(setNotification(notificationNormalize(err)));
-    }
+    });
   };
   const classes = useStyles();
   return (
@@ -172,6 +186,13 @@ export default function Register() {
             <Link to="/login">Уже есть аккаунт? Войти</Link>
           </Grid>
         </form>
+        {regMessage.status && (
+          <Typography className={classes.succesMessage} variant="body2" component="p" gutterBottom>
+            Регистрация прошла успешно. На указанный вами email адресс{' '}
+            <strong>{regMessage.email}</strong> было отправлено письмо с ссылкой на подтверждение.
+            Пожалуйста, перейдите по отправленной ссылке, чтобы завершить регистрацию.
+          </Typography>
+        )}
       </Container>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { checkUserLogin, removeNotification } from './redux/actions/actionCreators';
@@ -9,9 +9,8 @@ import PrivateRoute from './components/custom/PrivateRoute';
 import AuthRoute from './components/custom/AuthRoute';
 import Dashboard from './pages/Dashboard';
 import Register from './components/auth/Register';
-import Header from './components/header/Header';
 import Notification from './components/notification/Notification';
-
+import NotFound from './pages/NotFound';
 function App() {
   const { enqueueSnackbar } = useSnackbar();
   const { user, isAuthorizate, notifications } = useSelector(
@@ -51,11 +50,17 @@ function App() {
   // Роль
   return (
     <div className="App">
-      {isAuthorizate && <Header />}
       <Switch>
+        <Redirect exact from="/" to="/dashboard/users" />
+        <PrivateRoute
+          path="/dashboard"
+          isAuthorizate={isAuthorizate}
+          component={Dashboard}
+          user={user}
+        />
         <AuthRoute exact path="/login" component={Login} isAuthorizate={isAuthorizate} />
         <AuthRoute exact path="/register" component={Register} isAuthorizate={isAuthorizate} />
-        <PrivateRoute exact path="/" isAuthorizate={isAuthorizate} component={Dashboard} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   );
