@@ -13,25 +13,26 @@ import notificationNormalize from '../../API/notificationNormalize';
 export const userPostFetch = (user) => async (dispatch) => {
   try {
     const res = await axios.post(`${BASE_URL}auth/login`, user);
-    dispatch(setCurrentUser(res.data.user, res.data.token));
+    localStorage.setItem('token', res.data.token);
+    dispatch(setCurrentUser(res.data.user));
   } catch (err) {
     dispatch(setNotification(notificationNormalize(err)));
   }
 };
 
-export const checkUserLogin = (token) => async (dispatch) => {
+export const checkUserLogin = () => async (dispatch) => {
   try {
-    const res = await axios.post(`${BASE_URL}auth/check`, { token });
-    dispatch(setCurrentUser(res.data.user, token));
+    const res = await axios.post(`${BASE_URL}auth/check`);
+    dispatch(setCurrentUser(res.data.user));
   } catch (err) {
+    localStorage.removeItem('token');
     dispatch(removeCurrentUser());
   }
 };
 
-export const setCurrentUser = (user, token) => ({
+export const setCurrentUser = (user) => ({
   type: SET_CURRENT_USER,
   user,
-  token,
 });
 
 export const removeCurrentUser = () => ({

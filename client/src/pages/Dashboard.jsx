@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   main: {
     padding: '8px',
+    width: '100%',
   },
 }));
 

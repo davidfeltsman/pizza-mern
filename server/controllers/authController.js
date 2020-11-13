@@ -130,9 +130,7 @@ class Auth {
 
   async checkUser(req, res) {
     try {
-      const token = await req.headers['token'].split(' ')[1];
-      const { payload } = jwt.decode(token, { complete: true });
-      const user = await UserModel.findById(payload._id);
+      const user = await UserModel.findById(req.user._id);
       if (user) {
         res.status(200).json({ user });
       } else {

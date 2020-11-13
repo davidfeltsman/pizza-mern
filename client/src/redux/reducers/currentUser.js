@@ -5,10 +5,9 @@ const initialState = {
   isAuthorizate: localStorage.getItem('token') ? true : false,
 };
 
-const currentUser = (state = initialState, { type, user, token }) => {
+const currentUser = (state = initialState, { type, user }) => {
   switch (type) {
     case SET_CURRENT_USER:
-      localStorage.setItem('token', token);
       return {
         ...state,
         user,

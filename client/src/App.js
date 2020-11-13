@@ -12,6 +12,13 @@ import Register from './components/auth/Register';
 import Notification from './components/notification/Notification';
 import NotFound from './pages/NotFound';
 function App() {
+  const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(checkUserLogin());
+    }
+  }, [dispatch]);
   const { enqueueSnackbar } = useSnackbar();
   const { user, isAuthorizate, notifications } = useSelector(
     ({ currentUser: { user, isAuthorizate }, notificationAPI: { notifications } }) => ({
@@ -20,13 +27,7 @@ function App() {
       notifications,
     }),
   );
-  const dispatch = useDispatch();
-  useLayoutEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      dispatch(checkUserLogin(token));
-    }
-  }, [dispatch]);
+
   useEffect(() => {
     if (notifications.length > 0) {
       notifications.forEach((item) =>

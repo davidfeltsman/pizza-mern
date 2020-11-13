@@ -6,10 +6,16 @@ const isValidObjectId = mongoose.Types.ObjectId.isValid;
 class UserController {
   async index(req, res) {
     try {
-      const users = await UserModel.find({}).exec();
+      const limit = parseInt(req.query.limit, 10);
+      const skip = parseInt(req.query.page * limit, 10);
+      const users = await UserModel.find({}).skip(skip).limit(limit);
+      const toalUsersCount = await UserModel.count();
       res.json({
         status: 'success',
-        data: users,
+        data: {
+          users,
+          totalUsers: toalUsersCount,
+        },
       });
     } catch (error) {
       res.status(500).json({
