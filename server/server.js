@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 import './core/db.js';
 import passport from 'passport';
 import { router as authRouter } from './routes/authRoute.js';
@@ -11,6 +12,7 @@ import { jwtConfig } from './utils/passport.js';
 
 const app = express();
 
+app.use(morgan('combined'));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(cors());

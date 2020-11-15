@@ -61,7 +61,9 @@ class Auth {
         res.status(400).json({ status: 'error', errors: errors.array() });
         return;
       }
-      const candidate = await UserModel.findOne({ email: req.body.email });
+      const candidate = await UserModel.findOne({
+        $or: [{ email: req.body.email }, { username: req.body.username }],
+      });
       if (!candidate) {
         const salt = rand(160, 36);
         const data = {
@@ -111,9 +113,7 @@ class Auth {
       if (user) {
         user.confirmed = true;
         user.save();
-        res.json({
-          status: 'success',
-        });
+        res.send(`<p>Email ${user.email} успешно подтвержден</p>`);
       } else {
         res.status(404).json({
           status: 'error',

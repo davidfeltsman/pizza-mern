@@ -15,7 +15,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from 'react-hook-form';
 import { setNotification } from '../../redux/actions/actionCreators';
-import { axiosPost } from '../../API/API';
+import { api } from '../../API/API';
 
 const useStyles = makeStyles({
   signBox: {
@@ -52,7 +52,7 @@ export default function Register() {
     reValidateMode: 'onChange',
   });
   const onSubmit = (data) => {
-    axiosPost('auth/register', data, dispatch).then((res) => {
+    api.postData('auth/register', data).then((res) => {
       if (res) {
         setRegMessage({
           status: true,

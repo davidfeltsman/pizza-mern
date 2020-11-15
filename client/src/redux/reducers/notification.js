@@ -20,15 +20,12 @@ const notificationAPI = (state = initialState, { type, data, id }) => {
       }
 
     case REMOVE_NOTIFICATION:
-      const newArr = state.notifications.filter((item) => item.id !== id);
       return {
         ...state,
-        notifications: newArr,
+        notifications: state.notifications.filter((item) => item.id !== id),
       };
     default:
-      return {
-        ...state,
-      };
+      return state;
   }
 };
 

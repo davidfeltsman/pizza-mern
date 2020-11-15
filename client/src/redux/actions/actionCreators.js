@@ -2,27 +2,21 @@ import {
   SET_CURRENT_USER,
   SET_NOTIFICATION,
   REMOVE_NOTIFICATION,
-  BASE_URL,
   REMOVE_CURRENT_USER,
   CLEAR_NOTIFICATIONS,
 } from '../constants';
-import { axios } from '../../API/API';
-import notificationNormalize from '../../API/notificationNormalize';
+import { api } from '../../API/API';
 
 //USER
 export const userPostFetch = (user) => async (dispatch) => {
-  try {
-    const res = await axios.post(`${BASE_URL}auth/login`, user);
-    localStorage.setItem('token', res.data.token);
-    dispatch(setCurrentUser(res.data.user));
-  } catch (err) {
-    dispatch(setNotification(notificationNormalize(err)));
-  }
+  const res = await api.postData('auth/login', user);
+  localStorage.setItem('token', res.data.token);
+  dispatch(setCurrentUser(res.data.user));
 };
 
 export const checkUserLogin = () => async (dispatch) => {
   try {
-    const res = await axios.post(`${BASE_URL}auth/check`);
+    const res = await api.postData('auth/check');
     dispatch(setCurrentUser(res.data.user));
   } catch (err) {
     localStorage.removeItem('token');

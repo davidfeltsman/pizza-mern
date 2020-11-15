@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Register from './components/auth/Register';
 import Notification from './components/notification/Notification';
 import NotFound from './pages/NotFound';
+
 function App() {
   const dispatch = useDispatch();
   useLayoutEffect(() => {
@@ -30,25 +31,28 @@ function App() {
 
   useEffect(() => {
     if (notifications.length > 0) {
-      notifications.forEach((item) =>
-        enqueueSnackbar(item.message, {
-          autoHideDuration: 3000,
-          maxSnack: 10,
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left',
-          },
-          preventDuplicate: true,
-          onClose: () => dispatch(removeNotification(item.id)),
-          content: (key, message) => (
-            <Notification id={key} message={message} status={item.status} />
-          ),
-        }),
-      );
+      notifications.forEach((item) => {
+        if (item.message) {
+          return enqueueSnackbar(item.message, {
+            autoHideDuration: 2000,
+            maxsnack: 10,
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            preventDuplicate: true,
+            onExited: () => dispatch(removeNotification(item.id)),
+            content: (key, message) => (
+              <Notification id={key} message={message} status={item.status} />
+            ),
+          });
+        } else {
+          return null;
+        }
+      });
     }
   }, [notifications, dispatch, enqueueSnackbar]);
-  // Кабинет пользователя
-  // Роль
+
   return (
     <div className="App">
       <Switch>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { axiosGet } from '../API/API';
+import { api } from '../API/API';
 import UserTable from '../components/tables/UserTable';
 
-import { TablePagination } from '@material-ui/core';
+import { CircularProgress, TablePagination } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
 
@@ -16,7 +15,6 @@ const useStyles = makeStyles({
 
 export default function Users() {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [pagination, setPagination] = useState({
     page: 0,
     rowsPerPage: 25,
@@ -24,12 +22,10 @@ export default function Users() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    axiosGet(`users?limit=${pagination.rowsPerPage}&page=${pagination.page}`, dispatch).then(
-      (res) => {
-        setData(res.data.data);
-      },
-    );
-  }, [dispatch, pagination]);
+    api.getData(`users?limit=${pagination.rowsPerPage}&page=${pagination.page}`).then((res) => {
+      setData(res.data.data);
+    });
+  }, [pagination]);
 
   const handleChangePage = (event, newPage) => {
     setPagination({
@@ -48,7 +44,7 @@ export default function Users() {
 
   return (
     <div className={classes.tableWrap}>
-      {data && <UserTable users={data.users} />}
+      {data ? <UserTable users={data.users} /> : <CircularProgress />}
       <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
         component="div"

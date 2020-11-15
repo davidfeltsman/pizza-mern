@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -14,7 +14,9 @@ import {
 } from '@material-ui/core';
 
 import { Edit, Delete } from '@material-ui/icons';
-
+import { api } from '../../API/API';
+import SubmitAlert from '../popups/SubmitAlert';
+import EditUserPopUp from '../popups/EditUserPopUp';
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -31,9 +33,40 @@ const useStyles = makeStyles({
 
 export default function UserTable({ users }) {
   const classes = useStyles();
+  const [openModal, setOpenModal] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [editUser, setEditUser] = useState(null);
   const headers = ['Username', 'Email', 'Role', 'Confirmed'];
+
+  const deleteUserHandler = () => {
+    setOpenModal(false);
+    api.deleteData(`users/remove/${selected}`).then(() => window.location.reload());
+  };
+  const openModalHandler = (id) => {
+    setSelected(id);
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+  };
+
+  const editButtonHandler = (id) => {
+    api.getData(`users/${id}`).then((res) => setEditUser(res.data.data));
+  };
+  console.log(editUser);
+  const handleEditClose = () => {
+    setEditUser(null);
+  };
   return (
     <TableContainer component={Paper} className={classes.root}>
+      <SubmitAlert
+        type={0}
+        handleClose={handleModalClose}
+        deleteUser={deleteUserHandler}
+        open={openModal}
+      />
+      {editUser && <EditUserPopUp user={editUser} handleClose={handleEditClose} />}
       <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
@@ -56,10 +89,10 @@ export default function UserTable({ users }) {
                   variant="text"
                   aria-label="Edit and delete button group"
                   className={classes.buttonGroup}>
-                  <Button>
+                  <Button onClick={() => editButtonHandler(_id)}>
                     <Edit />
                   </Button>
-                  <Button>
+                  <Button onClick={() => openModalHandler(_id)}>
                     <Delete />
                   </Button>
                 </ButtonGroup>
@@ -74,4 +107,8 @@ export default function UserTable({ users }) {
 
 UserTable.propTypes = {
   users: PropTypes.array.isRequired,
+};
+
+UserTable.defaultProps = {
+  users: {},
 };
